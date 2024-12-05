@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import { ReservationsController } from './reservations.controller';
 import { DatabaseModule, LoggerModule } from '@app/common';
-import { ReservationsRespository } from './reservations.respository';
+import { ReservationsRepository } from './reservations.repository';
 import {
   ReservationDocument,
   ReservationSchema,
@@ -17,6 +17,6 @@ import {
     LoggerModule,
   ],
   controllers: [ReservationsController],
-  providers: [ReservationsService, ReservationsRespository],
+  providers: [ReservationsService, ReservationsRepository],
 })
 export class ReservationsModule {}
