@@ -4,7 +4,7 @@ import { Strategy } from 'passport-local';
 import { UsersService } from '../users/users.service';
 
 /**
- * Use the user's email and password to authenticate them
+ * A Passport strategy that uses the user's email and password to authenticate them
  */
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
