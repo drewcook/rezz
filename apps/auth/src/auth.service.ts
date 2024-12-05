@@ -1,8 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { UserDocument } from './users/models/user.schema';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
-  getHello(): string {
-    return 'Hello World!';
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  /**
+   * Creates a JWT with a payload of the current user's ID with the expiry set to the env var and set it as a cookie on the response.
+   * The cookie is only available for HTTP requests itself, making it more secure. Clients cannot work with the cookie unless it sends a request.
+   * @param user The current user in context after verifying email
+   * @param response The express response object
+   */
+  async login(user: UserDocument, response: Response) {
+    // Pluck out the current user's ID
+    const tokenPayload = {
+      userId: user._id.toHexString(),
+    };
+    // Set expiration based on env var
+    const expires = new Date();
+    expires.setSeconds(
+      expires.getSeconds() + this.configService.get('JWT_EXPIRATION'),
+    );
+    // Sign the JWT
+    const token = this.jwtService.sign(tokenPayload);
+    // Set the cookie
+    response.cookie('Authentication', token, {
+      httpOnly: true,
+      expires,
+    });
   }
 }
