@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UsersService } from '../users/users.service';
-import { Request } from 'express';
 import { TokenPayload } from '../interfaces/token-payload.interface';
 
 /**
@@ -16,9 +15,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly usersService: UsersService,
   ) {
     super({
-      // The JWT is stored as a cookie from the `auth/login` route
+      // This could be a request passed from Express or from an RPC call.
+      // The JWT will be on the cookies object if via HTTP or directly on the request object if via RPC.
+      // The JWT is written as an Authentication cookie from the `auth/login` route (for HTTP).
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => request?.cookies?.Authentication,
+        (request: any) =>
+          request?.cookies?.Authentication || request?.Authentication,
       ]),
       // Same key used to sign the token is used to verify it
       secretOrKey: configService.get<string>('JWT_SECRET'),
