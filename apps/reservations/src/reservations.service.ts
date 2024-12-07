@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
-import { PAYMENTS_SERVICE } from '@app/common';
+import { PAYMENTS_SERVICE, UserDto } from '@app/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { map } from 'rxjs';
 
@@ -19,11 +19,17 @@ export class ReservationsService {
    * @param userId The user ID from the JWT of the current authenticated user
    * @returns
    */
-  async create(createReservationDto: CreateReservationDto, userId: string) {
+  async create(
+    createReservationDto: CreateReservationDto,
+    { _id: userId, email }: UserDto,
+  ) {
     // Send a message to the Payments microservice to create a charge using the payload.
     // Create a reservation in response after the charge is successful.
     return this.paymentsService
-      .send('create_charge', createReservationDto.charge)
+      .send('create_charge', {
+        ...createReservationDto.charge,
+        email,
+      })
       .pipe(
         map(async (paymentIntentResponse) => {
           return await this.reservationsRepository.create({
