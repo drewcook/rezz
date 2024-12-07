@@ -1,4 +1,5 @@
 # Build and push Docker images to Google Container Registry
+# Run these steps based off the remote trigger in CloudBuild.
 steps:
   # Reservations
   - name: 'gcr.io/cloud-builders/docker'
