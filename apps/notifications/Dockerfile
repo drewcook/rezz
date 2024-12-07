@@ -4,19 +4,19 @@ FROM node:alpine as development
 
 WORKDIR /usr/src/app
 
+# Copy over app files
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY tsconfig.json tsconfig.json
-
-RUN npm install -g pnpm
-RUN pnpm install
-
+COPY nest-cli.json nest-cli.json
 COPY apps/notifications apps/notifications
 COPY libs libs
 
+# Install dependencies & build app
+RUN npm install -g pnpm
+RUN pnpm install
 RUN cd apps/notifications && pnpm install
-
-RUN pnpm run build
+RUN pnpm build notifications
 
 # Production steps
 
