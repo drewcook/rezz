@@ -4,6 +4,6 @@ This is a reservations app built with NestJS in a microservices architecture. It
 
 ## Architecture
 
-The microservices communicate via TCP and are Dockerized. They are hosted in a Kubernetes cluster via Google Cloud. There is a load balancer that helps direct HTTP requests.
+The microservices communicate via TCP and are Dockerized. They are hosted in a Kubernetes cluster via Google Cloud Provider's Kubernetes Engine, Container Registry, and Cloud Build for CI/CD. There is a load balancer that helps direct HTTP requests.
 
 ![\[./app-architecture.png\]](app-architecture.png)
