@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         (request: any) =>
           request?.cookies?.Authentication ||
           request?.Authentication ||
-          request?.headers.authentication,
+          request?.headers.Authentication,
       ]),
       // Same key used to sign the token is used to verify it
       secretOrKey: configService.get<string>('JWT_SECRET'),
