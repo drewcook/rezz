@@ -15,7 +15,7 @@ spec:
         app: payments
     spec:
       containers:
-      - image: us-east4-docker.pkg.dev/rezz-444007/payments/production
+      - image: 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/payments:latest
         name: payments
         env:
           - name: PORT

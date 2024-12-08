@@ -1,3 +1,7 @@
+# CI/CD for Amazon Web Services
+# Build and push Docker images to Elastic Container Registry (ECR)
+# Run these steps based off the remote trigger in CodeBuild and CodePipeline
+
 version: 0.2
 
 phases:
