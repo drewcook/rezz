@@ -4,7 +4,7 @@ describe('Reservations', () => {
   // Create a new user and authenticate before each test
   beforeAll(async () => {
     const user = {
-      email: 'e2e@gmail.com',
+      email: 'altheawebservices@gmail.com',
       password: 'ThisStrongPassword123!!!',
     };
     await fetch('http://auth:3001/users', {
