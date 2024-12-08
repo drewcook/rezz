@@ -1,0 +1,41 @@
+
+services:
+  # Run the E2E tests locally against the production microservices hosted in GCP
+  e2e:
+    build:
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./specs:/usr/src/app/specs
+    depends_on:
+      - reservations
+      - auth
+      - payments
+      - notifications
+      - mongo
+  # Use the production image of the other microservices
+  reservations:
+    image: us-east4-docker.pkg.dev/rezz-444007/reservations/production
+    env_file:
+      - ../apps/reservations/.env
+    ports:
+      - '3000:3000'
+  auth:
+    image: us-east4-docker.pkg.dev/rezz-444007/auth/production
+    env_file:
+      - ../apps/auth/.env
+    ports:
+      - '3001:3001'
+  payments:
+    image: us-east4-docker.pkg.dev/rezz-444007/payments/production
+    env_file:
+      - ../apps/payments/.env
+    ports:
+      - '3003:3003'
+  notifications:
+    image: us-east4-docker.pkg.dev/rezz-444007/notifications/production
+    env_file:
+      - ../apps/notifications/.env
+    ports:
+      - '3004:3004'
+  mongo:
+    image: mongo
