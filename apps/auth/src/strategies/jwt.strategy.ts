@@ -18,9 +18,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       // This could be a request passed from Express or from an RPC call.
       // The JWT will be on the cookies object if via HTTP or directly on the request object if via RPC.
       // The JWT is written as an Authentication cookie from the `auth/login` route (for HTTP).
+      // The JWT is returned from the auth service 'login' method directly as a header
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: any) =>
-          request?.cookies?.Authentication || request?.Authentication,
+          request?.cookies?.Authentication ||
+          request?.Authentication ||
+          request?.headers.authentication,
       ]),
       // Same key used to sign the token is used to verify it
       secretOrKey: configService.get<string>('JWT_SECRET'),

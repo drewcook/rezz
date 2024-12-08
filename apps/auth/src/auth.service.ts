@@ -30,10 +30,12 @@ export class AuthService {
     );
     // Sign the JWT
     const token = this.jwtService.sign(tokenPayload);
-    // Set the cookie
+    // Set the response Authentication cookie
     response.cookie('Authentication', token, {
       httpOnly: true,
       expires,
     });
+    // Return the JWT
+    return token;
   }
 }
