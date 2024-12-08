@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Logging into AWS ECR..."
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 978290811774.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - echo "Building and tagging the Docker image for Reservations..."
+      - docker build -t rezz/reservations -f ./apps/reservations/Dockerfile .
+      - docker tag rezz/reservations:latest 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/reservations:latest
+
+      - echo "Building and tagging the Docker image for Auth..."
+      - docker build -t rezz/auth -f ./apps/auth/Dockerfile .
+      - docker tag rezz/auth:latest 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/auth:latest
+
+      - echo "Building and tagging the Docker image for Payments..."
+      - docker build -t rezz/payments -f ./apps/reservations/Dockerfile .
+      - docker tag rezz/payments:latest 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/payments:latest
+
+      - echo "Building and tagging the Docker image for Notifications..."
+      - docker build -t rezz/notifications -f ./apps/reservations/Dockerfile .
+      - docker tag rezz/notifications:latest 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/notifications:latest
+  post_build:
+    commands:
+      - echo "Pushing the Docker images to AWS ECR..."
+      - docker push 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/reservations:latest
+      - docker push 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/auth:latest
+      - docker push 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/payments:latest
+      - docker push 978290811774.dkr.ecr.us-east-1.amazonaws.com/rezz/notifications:latest
