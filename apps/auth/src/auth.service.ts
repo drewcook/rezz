@@ -16,7 +16,7 @@ export class AuthService {
    * Creates a JWT with a payload of the current user's ID with the expiry set to the env var and set it as a cookie on the response.
    * The cookie is only available for HTTP requests itself, making it more secure. Clients cannot work with the cookie unless it sends a request.
    * @param user The current user in context after verifying email
-   * @param response The express response object
+   * @param response The JWT that is created
    */
   async login(user: UserDocument, response: Response) {
     // Pluck out the current user's ID
