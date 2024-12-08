@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rezz
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /reservations/* # Direct all reservations requests to the reservations microservice
+            pathType: ImplementationSpecific # GKE will handle the routing
+            backend:
+              service:
+                name: reservations
+                port:
+                  number: 3004
+          - path: /auth/* # Direct all auth requests to the auth microservice
+            pathType: ImplementationSpecific # GKE will handle the routing
+            backend:
+              service:
+                name: auth-http
+                port:
+                  number: 3003
